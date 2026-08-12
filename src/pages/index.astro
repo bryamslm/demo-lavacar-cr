@@ -1,0 +1,353 @@
+---
+/**
+ * Demo: lavado y detallado de autos.
+ * Negocio FICTICIO. Ángulo comercial: se vende por paquetes y por tiempo, el
+ * cliente quiere precio y duración claros antes de decidir, y saber si tiene
+ * que reservar.
+ *
+ * Estructura propia (no la del taller): hero, paquetes, extras, reservar,
+ * ubicación. Los paquetes son filas editoriales SIN tarjeta destacada: con
+ * tres niveles es tentador marcar uno como "recomendado" con borde de acento,
+ * pero ese es el tell nº1 de página genérica. Acá el criterio lo pone el
+ * cliente, no un borde.
+ */
+import Base from '../layouts/Base.astro';
+
+const brand = 'Lavacar Cristal';
+// Numero REAL de negocio de Bryam (8775 0508) con mensaje preescrito: el demo
+// es de un negocio ficticio, asi que el texto ya puesto le explica al que escribe
+// de donde viene y a Bryam de que rubro era el interesado.
+const whatsapp = 'https://wa.me/50687750508?text=Hola%20Bryam%2C%20vi%20la%20p%C3%A1gina%20de%20ejemplo%20del%20lavacar.%20Quiero%20una%20as%C3%AD%20para%20mi%20negocio.';
+
+const paquetes = [
+  {
+    nombre: 'Básico',
+    desc: 'Lavado exterior a mano, aspirado y limpieza de vidrios por dentro y por fuera.',
+    meta: '30 min · Desde ₡6.000',
+  },
+  {
+    nombre: 'Completo',
+    desc: 'Todo lo del básico más limpieza profunda de tapicería, llantas y tablero.',
+    meta: '1 hora · Desde ₡12.000',
+  },
+  {
+    nombre: 'Detallado',
+    desc: 'Todo lo del completo más encerado y pulido ligero de carrocería.',
+    meta: '2 horas · Desde ₡25.000',
+  },
+];
+
+const extras = [
+  {
+    nombre: 'Pulido de faros',
+    desc: 'Devuelve la transparencia a los focos opacados por el sol.',
+    meta: 'Desde ₡8.000',
+  },
+  {
+    nombre: 'Tratamiento de cuero',
+    desc: 'Limpieza y nutrición para asientos y volante de cuero.',
+    meta: 'Desde ₡10.000',
+  },
+  {
+    nombre: 'Lavado de motor',
+    desc: 'Desengrasado seguro sin mojar componentes eléctricos.',
+    meta: 'Desde ₡7.000',
+  },
+  {
+    nombre: 'Encerado',
+    desc: 'Una capa de protección que resalta el brillo del color.',
+    meta: 'Desde ₡9.000',
+  },
+];
+
+const pasos = [
+  {
+    n: '01',
+    titulo: 'Escríbanos por WhatsApp',
+    desc: 'Cuéntenos qué paquete quiere y a qué hora piensa llegar.',
+  },
+  {
+    n: '02',
+    titulo: 'Confirmamos el espacio',
+    desc: 'Le decimos si hay campo a esa hora o le ofrecemos otra cercana.',
+  },
+  {
+    n: '03',
+    titulo: 'Si llueve, no se pierde nada',
+    desc: 'Movemos su cita al primer espacio libre, sin costo adicional.',
+  },
+];
+---
+
+<Base
+  brand={brand}
+  whatsapp={whatsapp}
+  title="Lavacar Cristal: lavado y detallado de autos"
+  description="Paquetes de lavado con precio y duración claros, más servicios sueltos como pulido de faros y encerado. Reserve su espacio por WhatsApp."
+>
+  <!-- HERO. Cero overlay: el titular cae en la mitad superior oscura del asset. -->
+  <section class="hero">
+    <div class="hero-media">
+      <img
+        src="/hero.webp"
+        alt="Capó de un carro negro recién lavado con gotas de agua reflejando las luces de la calle de noche"
+        fetchpriority="high"
+        decoding="async"
+        width="1920"
+        height="1080"
+        data-parallax
+      />
+    </div>
+
+    <div class="wrap hero-content">
+      <h1 class="display">
+        <span class="serif reveal">Sabe cuánto cuesta</span>
+        <span class="sans reveal" data-delay="1">ANTES DE LLEGAR</span>
+      </h1>
+      <p class="lead reveal" data-delay="2">
+        Tres paquetes con precio y duración claros. Escoja el que necesita, separe su
+        espacio por WhatsApp y llegue sabiendo cuánto va a esperar.
+      </p>
+      <div class="hero-actions reveal" data-delay="3">
+        <a class="btn btn-primary" href={whatsapp} target="_blank" rel="noopener">
+          Reservar por WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#paquetes">Ver paquetes</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAQUETES: filas editoriales, sin tarjeta destacada ni borde de acento. -->
+  <section class="section" id="paquetes">
+    <div class="wrap">
+      <p class="eyebrow reveal">Paquetes</p>
+      <h2 class="section-title reveal" data-delay="1">
+        Precio y tiempo claros desde el inicio
+      </h2>
+      <p class="lead reveal" data-delay="2">
+        Tres opciones según cuánto tiempo tiene y cuánto quiere invertir. Todas incluyen
+        aspirado y limpieza de vidrios.
+      </p>
+
+      <div class="editorial">
+        {
+          paquetes.map((p, i) => (
+            <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <h3 class="editorial-name">{p.nombre}</h3>
+              <p class="editorial-desc">{p.desc}</p>
+              <span class="editorial-meta">{p.meta}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTRAS: servicios sueltos que se suman a cualquier paquete. -->
+  <section class="section" id="extras">
+    <div class="wrap">
+      <p class="eyebrow reveal">Extras</p>
+      <h2 class="section-title reveal" data-delay="1">
+        Servicios sueltos para sumar a cualquier paquete
+      </h2>
+      <p class="lead reveal" data-delay="2">
+        Si su carro necesita algo puntual, lo agrega al paquete que eligió sin tener que
+        subir al siguiente nivel.
+      </p>
+
+      <div class="editorial">
+        {
+          extras.map((e, i) => (
+            <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <h3 class="editorial-name">{e.nombre}</h3>
+              <p class="editorial-desc">{e.desc}</p>
+              <span class="editorial-meta">{e.meta}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVAR: tres pasos, número en acento (único detalle deliberado además del CTA). -->
+  <section class="section reservar" id="reservar">
+    <div class="wrap">
+      <p class="eyebrow reveal">Cómo reservar</p>
+      <h2 class="section-title reveal" data-delay="1">Separe su espacio en un mensaje</h2>
+
+      <div class="pasos">
+        {
+          pasos.map((p, i) => (
+            <article class="paso reveal" data-delay={String(i + 1)}>
+              <span class="paso-num">{p.n}</span>
+              <h3 class="paso-titulo">{p.titulo}</h3>
+              <p class="paso-desc">{p.desc}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <a class="btn btn-primary reservar-cta reveal" data-delay="4" href={whatsapp} target="_blank" rel="noopener">
+        Reservar por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN: horario y formas de pago. -->
+  <section class="section" id="ubicacion">
+    <div class="wrap ubicacion-grid">
+      <div class="reveal">
+        <p class="eyebrow">Dónde y cuándo</p>
+        <h2 class="section-title">Horario amplio, pague como le acomode</h2>
+        <p class="lead">
+          Trabajamos casi toda la semana para que el lavado entre en su rutina, no al
+          revés. Un local de fácil acceso, con sombra para esperar.
+        </p>
+        <a class="btn btn-primary" href={whatsapp} target="_blank" rel="noopener">
+          Escribinos por WhatsApp
+        </a>
+      </div>
+
+      <dl class="datos reveal" data-delay="2">
+        <div>
+          <dt>Lunes a sábado</dt>
+          <dd>7:00 a. m. – 6:00 p. m.</dd>
+        </div>
+        <div>
+          <dt>Domingo</dt>
+          <dd>8:00 a. m. – 2:00 p. m.</dd>
+        </div>
+        <div>
+          <dt>Pago</dt>
+          <dd>Efectivo, Sinpe Móvil y tarjeta</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ─── Hero ─────────────────────────────────────────────────────────────── */
+  /* 100dvh, no 100vh: el chrome móvil recorta la sección con vh. */
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-start;
+    padding-top: clamp(7rem, 18vh, 11rem);
+    padding-bottom: clamp(3rem, 10vh, 6rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    transform: scale(1.06);
+    will-change: transform;
+  }
+
+  /* Única concesión de degradado: NO es un scrim sobre el titular (el asset ya
+     es oscuro arriba), es la disolución del asset hacia el color de página en el
+     borde inferior, para que la sección siguiente no entre con un corte seco. */
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 38%;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  .hero-content {
+    position: relative;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  /* ─── Reservar ─────────────────────────────────────────────────────────── */
+  .pasos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .paso {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* El acento aparece acá y en el CTA. En ningún otro lado. */
+  .paso-num {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+
+  .paso-titulo {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .paso-desc {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .reservar-cta {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* ─── Ubicación ────────────────────────────────────────────────────────── */
+  .ubicacion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .datos {
+    margin: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .datos > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+    padding-block: 1.05rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .datos dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+
+  .datos dd {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.98rem;
+    text-align: right;
+  }
+</style>
