@@ -102,7 +102,7 @@ const pasos = [
     <div class="wrap hero-content">
       <h1 class="display">
         <span class="serif reveal">Sabe cuánto cuesta</span>
-        <span class="sans reveal" data-delay="1">ANTES DE LLEGAR</span>
+        <span class="sans reveal" data-delay="1">Antes de <em>llegar</em></span>
       </h1>
       <p class="lead reveal" data-delay="2">
         Tres paquetes con precio y duración claros. Escoja el que necesita, separe su
@@ -133,6 +133,7 @@ const pasos = [
         {
           paquetes.map((p, i) => (
             <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <span class="editorial-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="editorial-name">{p.nombre}</h3>
               <p class="editorial-desc">{p.desc}</p>
               <span class="editorial-meta">{p.meta}</span>
@@ -159,6 +160,7 @@ const pasos = [
         {
           extras.map((e, i) => (
             <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <span class="editorial-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="editorial-name">{e.nombre}</h3>
               <p class="editorial-desc">{e.desc}</p>
               <span class="editorial-meta">{e.meta}</span>
@@ -264,6 +266,29 @@ const pasos = [
     inset: auto 0 0 0;
     height: 38%;
     background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  /* En el teléfono la foto apaisada recortada al centro deja el titular sobre la
+     zona oscura y el héroe se ve negro: el asset se desperdicia. Abajo de 780 px
+     la foto deja de ser fondo, ocupa la mitad de arriba y el titular va debajo,
+     sobre negro sólido. */
+  @media (max-width: 780px) {
+    .hero {
+      min-height: auto;
+      padding-top: calc(50vh + 0.75rem);
+      padding-bottom: 2.5rem;
+    }
+    .hero-media {
+      inset: 0 0 auto 0;
+      height: 50vh;
+    }
+    .hero-media img {
+      object-position: 55% 45%;
+      transform: scale(1.02);
+    }
+    .hero-media::after {
+      height: 46%;
+    }
   }
 
   .hero-content {
